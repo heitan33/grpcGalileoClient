@@ -1,0 +1,11 @@
+host: 192.168.1.233:50051
+hostName: wbei-test-2022
+CpuUsageRate: 50
+MemoryUsageRate: 80
+DiskUsage: 80
+Load: 80
+DiscRead: 1000
+DiscWrite: 1000
+IopsRead: 1000
+IopsWrite: 1000
+DeviceLinkingCount: 30

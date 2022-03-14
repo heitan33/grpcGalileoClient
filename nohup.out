@@ -1,0 +1,12 @@
+2022/03/14 08:14:24 2022-03-14 08:14:24.405009726 +0800 CST m=+5.117250690
+{"tag":false,"hostName":"wbei-test-2022","discRead":0,"discWrite":0,"memoryUsageRate":74.93,"discInfo":[{"DiscName":"/dev/mapper/centos-root","Total":17,"UsageRate":83},{"DiscName":"/dev/sda1","Total":0.99,"UsageRate":16}],"cpuUsageRate":2,"load":4,"bandwidthUpload":0,"bandwidthDownload":0,"deviceLinkingCount":25,"iopsRead":0,"iopsWrite":0}
+{false wbei-test-2022 0 0 74.93 [{/dev/mapper/centos-root 17 83} {/dev/sda1 0.99 16}] 2 4 0 0 25 0 0}
+exporter.ServerStatItem
+false [{/dev/mapper/centos-root 17 83} {/dev/sda1 0.99 16}] 25 0 0
+25 0 0 74.93 [{/dev/mapper/centos-root 17 83} {/dev/sda1 0.99 16}] 2 4 0 0
+/dev/mapper/centos-root 83
+----------
+true
+----------
+2022/03/14 08:14:44 rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp 192.168.1.233:50051: i/o timeout"
+exit status 1
