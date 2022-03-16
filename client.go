@@ -12,8 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/yaml.v2"
 	"grpcClient/exporter"
+
+	"gopkg.in/yaml.v2"
 )
 
 type myConf exporter.Conf
@@ -178,8 +179,8 @@ func serverState() string {
 	}
 	var c myConf
 	conf := c.getConf()
-    var hostName string
-    hostName = conf.HostName
+	var hostName string
+	hostName = conf.HostName
 
 	resourceInfo = serverStatJson(hostName, discInfoList, deviceLinkingCountInt, discReadFloat, discWriteFloat, memoryUsageRateFloat2, cpuUsageRate, load, bandwidthUpload, bandwidthDownload, iopsReadFloat, iopsWriteFloat)
 	log.Println(time.Now().String())
@@ -201,10 +202,11 @@ func serverStatJson(hostName string, discInfoList []exporter.DiskInfo, deviceLin
 //var resourceInfo ServerStatItem
 
 var address string
-var warning, midValue bool = false ,false
+var warning, midValue bool = false, false
 
 func main() {
 	var c myConf
+	var count int8
 	var Number exporter.Number
 	var pioResourceInfo *exporter.ServerStatItem
 
@@ -223,7 +225,7 @@ func main() {
 	pioNumber.DeviceLinkingCount = conf.DeviceLinkingCount
 
 	address = conf.Host
-	
+
 	warning = pioResourceInfo.Tag
 
 	for {
@@ -233,28 +235,33 @@ func main() {
 		fmt.Println(exporter.ResourceInfo)
 		fmt.Println(reflect.TypeOf(exporter.ResourceInfo))
 		pioResourceInfo = &exporter.ResourceInfo
-//		warning = pioResourceInfo.Tag
-//		diskInfo := pioResourceInfo.DiscInfoList
-//		linkCount := pioResourceInfo.DeviceLinkingCountInt
-//		diskPerRead := pioResourceInfo.DiscReadFloat
-//		diskPerWrite := pioResourceInfo.DiscWriteFloat
-//		fmt.Println(diskInfo, linkCount, diskPerRead, diskPerWrite)
+		//		warning = pioResourceInfo.Tag
+		//		diskInfo := pioResourceInfo.DiscInfoList
+		//		linkCount := pioResourceInfo.DeviceLinkingCountInt
+		//		diskPerRead := pioResourceInfo.DiscReadFloat
+		//		diskPerWrite := pioResourceInfo.DiscWriteFloat
+		//		fmt.Println(diskInfo, linkCount, diskPerRead, diskPerWrite)
 		fmt.Println(pioResourceInfo.Tag, pioResourceInfo.DiscInfoList, pioResourceInfo.DeviceLinkingCountInt, pioResourceInfo.DiscReadFloat, pioResourceInfo.DiscWriteFloat)
 
-//		resourceInfo.DeviceLinkingCountInt = DeviceLinkingCountInt		
-//		var number int64 = 20
+		//		resourceInfo.DeviceLinkingCountInt = DeviceLinkingCountInt
+		//		var number int64 = 20
 		warning := exporter.ResourceInfo.Compare(Number)
 		fmt.Println("----------")
 		fmt.Println(warning)
 		fmt.Println("----------")
-        if warning != midValue {
-			midValue = warning
-			pioResourceInfo.Tag = midValue
-			strResourceInfo ,err := json.Marshal(exporter.ResourceInfo)
-			if err != nil {
-				fmt.Println(err)
+		if warning != midValue {
+			count++
+			if count == 3 {
+				midValue = warning
+				pioResourceInfo.Tag = midValue
+				strResourceInfo, err := json.Marshal(exporter.ResourceInfo)
+				if err != nil {
+					fmt.Println(err)
+				}
+				exporter.Report(midValue, string(strResourceInfo), address)
 			}
-			exporter.Report(midValue, string(strResourceInfo), address)	
+		} else {
+			count = 0
 		}
 		time.Sleep(time.Duration(90) * time.Second)
 	}
